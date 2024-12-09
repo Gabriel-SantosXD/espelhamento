@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compartilhamento de Tela - Servidor</title>
+    <script src="/socket.io/socket.io.js"></script>
+ <!-- ! está puxando o css do react-->
+  <script>const hostname = window.location.hostname;
+    const cssLink = document.createElement('link');
+    cssLink.rel = 'stylesheet';
+    cssLink.href = `http://${hostname}:3000/styles.css`; // Usando o hostname
+    document.head.appendChild(cssLink);</script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+      }
+  
+    </style>
+  </head>
+  <body>
+    <h1>Compartilhamento de Tela</h1>
+    <p>Clique no botão abaixo para iniciar o compartilhamento de tela.</p>
+    <button id="startShare" class="btn-s">Iniciar Compartilhamento de Tela</button>
+
+    <script>
+      const socket = io(`http://${window.location.hostname}:5000`);
+
+      document
+        .getElementById("startShare")
+        .addEventListener("click", async () => {
+          try {
+            const displayStream = await navigator.mediaDevices.getDisplayMedia({
+              video: true,
+              audio: true,
+            });
+
+            const peerConnection = new RTCPeerConnection();
+
+            // Adicionar tracks de vídeo e áudio
+            displayStream.getTracks().forEach((track) => {
+              peerConnection.addTrack(track, displayStream);
+            });
+
+            // Manipular candidatos ICE
+            peerConnection.onicecandidate = (event) => {
+              if (event.candidate) {
+                socket.emit("webrtc-candidate", event.candidate);
+              }
+            };
+
+            // Criar oferta e enviar para o receptor
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            socket.emit("webrtc-offer", peerConnection.localDescription);
+
+            // Receber resposta do receptor
+            socket.on("webrtc-answer", async (answer) => {
+              await peerConnection.setRemoteDescription(
+                new RTCSessionDescription(answer)
+              );
+            });
+
+            // Adicionar candidatos ICE recebidos
+            socket.on("webrtc-candidate", async (candidate) => {
+              await peerConnection.addIceCandidate(
+                new RTCIceCandidate(candidate)
+              );
+            });
+
+            console.log("Compartilhamento de tela iniciado com áudio!");
+          } catch (error) {
+            console.error("Erro ao iniciar o compartilhamento de tela:", error);
+          }
+        });
+    </script>
+  </body>
+</html>

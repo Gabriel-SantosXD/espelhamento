@@ -1,0 +1,79 @@
+.Dialog {
+  width: 400px;
+  height: auto;
+  z-index: 2; /* Garante que o Dialog fique acima de outros elementos */
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(75, 74, 74);
+  padding: 20px;
+  text-align: center;
+  color: white;
+  position: fixed;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(2px);
+  z-index: 1; /* Garante que o fundo apareça atrás do Dialog */
+}
+
+.btn-close {
+  background-color: rgb(131, 131, 131);
+  color: white;
+  position: absolute;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  transition: background-color 1s ease-in-out, color 1s ease-in-out;
+}
+.btn-a {
+  background-color: rgb(131, 131, 131);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  bottom: 10px;
+  cursor: pointer;
+  transition: background-color 1s ease-in-out, color 1s ease-in-out;
+  margin-bottom: 30px;
+  margin-right: 2px;
+}
+.btn-s {
+  background-color: rgb(131, 131, 131);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  bottom: 10px;
+  cursor: pointer;
+  transition: background-color 1s ease-in-out, color 1s ease-in-out;
+  margin-bottom: 30px;
+  margin-right: 2px;
+}
+
+.btn-s:hover,
+.btn-close:hover,
+.btn-a:hover {
+  background: white;
+  color: rgb(53, 53, 53);
+}
+
+body {
+  color: rgb(212, 210, 210);
+  background: rgb(39, 39, 39);
+}
