@@ -28,7 +28,7 @@ Para rodar este projeto, você precisará de:
 Clone este repositório para o seu ambiente local:
 
 ```bash
-git clone https://github.com/seu-usuario/compartilhamento-tela.git
+git clone https://github.com/Gabriel-SantosXD/compartilhamento-tela.git
 cd compartilhamento-tela
 ```
 
